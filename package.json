@@ -1,6 +1,6 @@
 {
   "name": "sync-pom-version",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sync package.json and pom.xml versions",
   "main": "index.js",
   "author": "Damien Arrachequesne",
@@ -9,7 +9,6 @@
     "sync-pom-version": "bin/sync"
   },
   "dependencies": {
-    "xml": "~1.0.1",
     "xml-parser": "~1.2.1"
   },
   "repository": {
