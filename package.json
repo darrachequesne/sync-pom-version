@@ -1,0 +1,27 @@
+{
+  "name": "sync-pom-version",
+  "version": "1.0.0",
+  "description": "sync package.json and pom.xml versions",
+  "main": "index.js",
+  "author": "Damien Arrachequesne",
+  "license": "MIT",
+  "bin": {
+    "sync-pom-version": "bin/sync"
+  },
+  "dependencies": {
+    "xml": "~1.0.1",
+    "xml-parser": "~1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darrachequesne/sync-pom-version"
+  },
+  "bugs": {
+    "url": "https://github.com/darrachequesne/sync-pom-version/issues"
+  },
+  "homepage": "https://github.com/darrachequesne/sync-pom-version#readme",
+  "files": [
+    "index.js",
+    "bin/"
+  ]
+}
