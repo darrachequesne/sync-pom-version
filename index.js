@@ -11,7 +11,7 @@ main(pomPath, packagePath);
 function main (pomPath, packagePath) {
   var pomContent = fs.readFileSync(pomPath, 'utf8');
   var pom = parse(pomContent);
-  var pomVersion = pom.root.children.filter(function (item) { return item.name === 'version'; })[0].content;
+  var pomVersion = pom.root.children.filter(function (item) { return item.name === 'version'; })[0].content.replace(/\.RELEASE$/, '');
 
   console.log('found version ' + pomVersion + ' in pom.xml');
 
