@@ -12,7 +12,7 @@ function main (pomPath, packagePath) {
   var pomContent = fs.readFileSync(pomPath, 'utf8');
   var pom = parse(pomContent);
   var pomVersionNode = extractPomVersionNode(pom.root);
-  if (!(pomVersionNode)) {
+  if (!pomVersionNode) {
       var parent = extractParentNode(pom.root);
       pomVersionNode = extractPomVersionNode(parent);
   }
@@ -43,10 +43,9 @@ function extractParentNode(node) {
 }
 
 function extractPomVersionNode(parent) {
-    var pomVersion = parent.children.filter(function (item) {
+    return parent.children.filter(function (item) {
         return item.name === 'version';
     })[0];
-    return pomVersion;
 }
 
 function formatVersion (version) { return '"version": "' + version + '"'; }
