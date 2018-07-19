@@ -17,7 +17,7 @@ function main (pomPath, packagePath) {
       pomVersionNode = extractPomVersionNode(parent);
   }
 
-  var pomVersion = pomVersionNode.content;
+  var pomVersion = pomVersionNode.content.replace(/[\.-](RELEASE|FINAL)$/i, '');
 
   console.log('found version ' + pomVersion + ' in pom.xml');
 
