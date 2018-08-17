@@ -12,12 +12,12 @@ function main (pomPath, packagePath) {
   var pomContent = fs.readFileSync(pomPath, 'utf8');
   var pom = parse(pomContent);
   var pomVersionNode = extractPomVersionNode(pom.root);
-  if (!(pomVersionNode)) {
+  if (!pomVersionNode) {
       var parent = extractParentNode(pom.root);
       pomVersionNode = extractPomVersionNode(parent);
   }
 
-  var pomVersion = pomVersionNode.content;
+  var pomVersion = pomVersionNode.content.replace(/[\.-](RELEASE|FINAL)$/i, '');
 
   console.log('found version ' + pomVersion + ' in pom.xml');
 
@@ -43,10 +43,9 @@ function extractParentNode(node) {
 }
 
 function extractPomVersionNode(parent) {
-    var pomVersion = parent.children.filter(function (item) {
+    return parent.children.filter(function (item) {
         return item.name === 'version';
     })[0];
-    return pomVersion;
 }
 
 function formatVersion (version) { return '"version": "' + version + '"'; }
