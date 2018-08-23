@@ -9,6 +9,7 @@
     "sync-pom-version": "bin/sync"
   },
   "dependencies": {
+    "commander": "^2.17.1",
     "xml-parser": "~1.2.1"
   },
   "repository": {
