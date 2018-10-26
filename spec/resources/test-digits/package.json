@@ -1,13 +1,13 @@
 {
   "name": "@myCompany/my-project",
-  "version": "1.20-SNAPSHOT",
+  "version": "1.21-SNAPSHOT",
   "description": "my project",
   "main": "./dist/js/xx.js",
   "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack --config webpack.config.js",
-    "check": "npm-check || true",
+    "check": "npm-check || true"
   },
   "author": "",
   "license": "",

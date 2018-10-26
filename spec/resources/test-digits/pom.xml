@@ -5,5 +5,5 @@
     <packaging>jar</packaging>
     <name>my project</name>
     <description>my project</description>
-    <version>1.21-SNAPSHOT</version>
+    <version>1.22-SNAPSHOT</version>
 </project>
