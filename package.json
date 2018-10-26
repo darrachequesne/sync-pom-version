@@ -22,5 +22,8 @@
   "files": [
     "index.js",
     "bin/"
-  ]
+  ],
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
