@@ -4,11 +4,24 @@ var syncPom = require('../../syncpom.js');
 
 describe('Array', function() {
     describe('pom have a different version on two digits', function() {
+        var pomContent =""
+        beforeEach(()=>{
+            pomContent = "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n" +
+                "    <modelVersion>4.0.0</modelVersion>\n" +
+                "    <artifactId>my-project</artifactId>\n" +
+                "    <packaging>jar</packaging>\n" +
+                "    <name>my project</name>\n" +
+                "    <description>my project</description>\n" +
+                "    <version>1.22-SNAPSHOT</version>\n" +
+                "</project>"
+        })
         it('updates the version number on package.json with the same version of pom on three digits', function() {
+            var packageVersion="";
 
-            syncPom.main("spec/resources/test-digits/pom.xml", "spec/resources/test-digits/package.json", function(path, content) {
-                console.log(content);
+            syncPom.main(pomContent, "spec/resources/test-digits/package.json", function(path, content) {
+                packageVersion = JSON.parse(content).version;
             });
+            assert.equal(packageVersion,"1.22-SNAPSHOT")
 
         });
     });

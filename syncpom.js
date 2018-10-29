@@ -1,8 +1,7 @@
 var fs = require('fs');
 var parse = require('xml-parser');
 
-exports.main = function(pomPath, packagePath, writer) {
-    var pomContent = fs.readFileSync(pomPath, 'utf8');
+exports.main = function(pomContent, packagePath, writer) {
     var pom = parse(pomContent);
     var pomVersionNode = extractPomVersionNode(pom.root);
     if (!pomVersionNode) {
