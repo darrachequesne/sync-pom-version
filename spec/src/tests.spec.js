@@ -3,13 +3,13 @@ var assert = require('assert');
 var syncPom = require('../../syncpom.js');
 
 // Test ancora da fare
-// 1) pom già su tre cifre
 // 2) pom su due cifre ma package.json già aggiornato
 // 3) pom già su tre cifre ma package.json già aggiornato
 // 4) versione pom sul parent
 
 var pomContent ="";
 var packageJsonContent = "";
+
 describe('sync-pom-version tests', function() {
     beforeEach(()=>{
         pomContent = "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n" +
@@ -37,15 +37,7 @@ describe('sync-pom-version tests', function() {
         var PACKAGE_JSON_OLD_VERSION = "1.34.0";
         var PACKAGE_JSON_EXPECTED_NEW_VERSION = "1.35.0";
 
-        pomContent = setVersion(pomContent, POM_NEW_VERSION);
-        packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
-        var packageVersion="";
-
-        syncPom.main(pomContent, packageJsonContent, function(content) {
-            packageVersion = JSON.parse(content).version;
-        });
-
-        assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+        testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION);
     });
 
     it('pom has an updated SNAPSHOT version on two digits -> package.json should be updated with the same SNAPSHOT version of pom on three digits', function() {
@@ -53,15 +45,7 @@ describe('sync-pom-version tests', function() {
         var PACKAGE_JSON_OLD_VERSION = "1.34.0";
         var PACKAGE_JSON_EXPECTED_NEW_VERSION = "1.35.0-SNAPSHOT";
 
-        pomContent = setVersion(pomContent, POM_NEW_VERSION);
-        packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
-        var packageVersion="";
-
-        syncPom.main(pomContent, packageJsonContent, function(content) {
-            packageVersion = JSON.parse(content).version;
-        });
-
-        assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+        testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION);
     });
 
     it('pom has an updated version on three digits -> package.json should be updated with the same version of pom', function() {
@@ -69,18 +53,21 @@ describe('sync-pom-version tests', function() {
         var PACKAGE_JSON_OLD_VERSION = "1.34.0";
         var PACKAGE_JSON_EXPECTED_NEW_VERSION = "1.35.2";
 
-        pomContent = setVersion(pomContent, POM_NEW_VERSION);
-        packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
-        var packageVersion="";
+        testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION);
+    });
+});
 
-        syncPom.main(pomContent, packageJsonContent, function(content) {
-            packageVersion = JSON.parse(content).version;
-        });
+function testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION) {
+    pomContent = setVersion(pomContent, POM_NEW_VERSION);
+    packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
+    var packageVersion = "";
 
-        assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+    syncPom.main(pomContent, packageJsonContent, function (content) {
+        packageVersion = JSON.parse(content).version;
     });
 
-});
+    assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+}
 
 function setVersion(content, version) {
     return content.replace("######", version);

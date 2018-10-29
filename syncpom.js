@@ -41,16 +41,19 @@ function extractPomVersionNode(parent) {
     })[0];
 }
 
-function padToThreeNumbers(version) {
-    var tokens = version.split('.').length ;
-    var numbersToAdd =3-tokens;
-    for(var i =0; i<numbersToAdd;i++){
-        version = version+".0"
+function padToNPMVersion(version) {
+    var NPM_VERSION_SEQUENCES = 3;
+
+    var tokens = version.split('.').length;
+    var missingSeq = NPM_VERSION_SEQUENCES - tokens;
+    for (var i = 0; i < missingSeq; i++) {
+        version = version + ".0"
     }
     return version;
 }
 
 function mvnVersionToNpm (mvnVersion) {
     var tokens = mvnVersion.split("-");
-    return padToThreeNumbers(tokens[0]) + (tokens.length == 2 ? "-" +  tokens[1] : "");
+    var snapshotSuffix = (tokens.length == 2 ? "-" +  tokens[1] : "");
+    return padToNPMVersion(tokens[0]) + snapshotSuffix;
 }
