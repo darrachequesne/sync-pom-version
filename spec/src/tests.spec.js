@@ -59,12 +59,15 @@ describe('sync-pom-version tests', function() {
     it('pom has a version on two digits, package.json already has the same version on three digits  -> no updates expected', function() {
         var POM_NEW_VERSION = "1.35";
         var PACKAGE_JSON_OLD_VERSION = "1.35.0";
-        pomContent = setVersion(pomContent, POM_NEW_VERSION);
-        packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
 
-        syncPom.main(pomContent, packageJsonContent, function (content) {
-            assert.fail("Unexpected attempt to write the following updated package.json:\n\n " + content);
-        });
+        testNoReplacementOccurred(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION);
+    });
+
+    it('pom has a version on three digits, package.json already has the same version -> no updates expected', function() {
+        var POM_NEW_VERSION = "1.35.3";
+        var PACKAGE_JSON_OLD_VERSION = "1.35.3";
+
+        testNoReplacementOccurred(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION);
     });
 });
 
@@ -78,6 +81,15 @@ function testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKA
     });
 
     assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+}
+
+function testNoReplacementOccurred(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION) {
+    pomContent = setVersion(pomContent, POM_NEW_VERSION);
+    packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
+
+    syncPom.main(pomContent, packageJsonContent, function (content) {
+        assert.fail("Unexpected attempt to write the following updated package.json:\n\n " + content);
+    });
 }
 
 function setVersion(content, version) {
