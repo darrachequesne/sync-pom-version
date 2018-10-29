@@ -1,7 +1,7 @@
 var fs = require('fs');
 var parse = require('xml-parser');
 
-exports.main = function(pomContent, packagePath, writer) {
+exports.main = function(pomContent, packageContent, writer) {
     var pom = parse(pomContent);
     var pomVersionNode = extractPomVersionNode(pom.root);
     if (!pomVersionNode) {
@@ -13,8 +13,9 @@ exports.main = function(pomContent, packagePath, writer) {
 
     console.log('found version ' + pomVersion + ' in pom.xml');
 
-    var packageContent = fs.readFileSync(packagePath, 'utf8');
-    var packageVersion = JSON.parse(packageContent).version;
+
+    var json = JSON.parse(packageContent);
+    var packageVersion = json.version;
 
     console.log('found version ' + packageVersion + ' in package.json');
 
@@ -22,8 +23,9 @@ exports.main = function(pomContent, packagePath, writer) {
         return;
     }
 
-    var newPackageContent = packageContent.replace(formatVersion(packageVersion), formatVersion(pomVersion));
-    writer(packagePath, newPackageContent, 'utf8');
+    json.version = pomVersion;
+    var newPackageContent = JSON.stringify(json);
+    writer(newPackageContent);
 
     console.log('package.json updated to version ' + pomVersion);
 };
@@ -33,7 +35,6 @@ function extractParentNode(node) {
         return item.name === 'parent';
     })[0];
 }
-
 function extractPomVersionNode(parent) {
     return parent.children.filter(function (item) {
         return item.name === 'version';
