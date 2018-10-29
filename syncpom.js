@@ -41,4 +41,7 @@ function extractPomVersionNode(parent) {
     })[0];
 }
 
-function mvnVersionToNpm (mvnVersion) { return  mvnVersion + '.0'; }
+function mvnVersionToNpm (mvnVersion) {
+    var tokens = mvnVersion.split("-");
+    return tokens[0] + ".0" + (tokens.length == 2 ? "-" +  tokens[1] : "");
+}
