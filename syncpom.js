@@ -53,7 +53,7 @@ function padToNPMVersion(version) {
 
 function mvnVersionToNpm (mvnVersion) {
     var normalizedMvnVersion = mvnVersion.replace(/[\.-](RELEASE|FINAL)$/i, '');
-    var tokens = mvnVersion.split("-");
+    var tokens = normalizedMvnVersion.split("-");
     var snapshotSuffix = (tokens.length == 2 ? "-" +  tokens[1] : "");
     return padToNPMVersion(tokens[0]) + snapshotSuffix;
 }

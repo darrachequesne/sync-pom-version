@@ -69,6 +69,16 @@ describe('sync-pom-version tests', function() {
 
         testNoReplacementOccurred(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION);
     });
+
+
+    it('pom has an updated version on two digits and RELEASE suffix -> package.json should be updated with three digits and no RELEASE suffix', function() {
+        var POM_NEW_VERSION = "1.35-RELEASE";
+        var PACKAGE_JSON_OLD_VERSION = "1.34.0";
+        var PACKAGE_JSON_EXPECTED_NEW_VERSION = "1.35.0";
+
+        testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION);
+    });
+
 });
 
 function testVersionReplacement(POM_NEW_VERSION, PACKAGE_JSON_OLD_VERSION, PACKAGE_JSON_EXPECTED_NEW_VERSION) {
