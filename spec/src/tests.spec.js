@@ -2,6 +2,12 @@ var assert = require('assert');
 
 var syncPom = require('../../syncpom.js');
 
+// Test ancora da fare
+// 1) pom già su tre cifre
+// 2) pom su due cifre ma package.json già aggiornato
+// 3) pom già su tre cifre ma package.json già aggiornato
+// 4) versione pom sul parent
+
 describe('Array', function() {
     var pomContent ="";
     var packageJsonContent = "";
