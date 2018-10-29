@@ -17,15 +17,25 @@ describe('Array', function() {
         });
 
         it('updates the version number on package.json with the same version of pom on three digits', function() {
-            pomContent = setVersion(pomContent, "1.35-SNAPSHOT");
+            pomContent = setVersion(pomContent, "1.35");
             var packageVersion="";
 
             syncPom.main(pomContent, "spec/resources/test-digits/package.json", function(path, content) {
                 packageVersion = JSON.parse(content).version;
             });
-            assert.equal(packageVersion,"1.22-SNAPSHOT")
-
+            assert.equal(packageVersion,"1.35")
         });
+
+        it('updates the version number on package.json with the same SNAPSHOT version of pom on three digits', function() {
+            pomContent = setVersion(pomContent, "1.1-SNAPSHOT");
+            var packageVersion="";
+
+            syncPom.main(pomContent, "spec/resources/test-digits/package.json", function(path, content) {
+                packageVersion = JSON.parse(content).version;
+            });
+            assert.equal(packageVersion,"1.1-SNAPSHOT")
+        });
+
     });
 });
 
