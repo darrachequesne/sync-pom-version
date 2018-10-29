@@ -23,7 +23,7 @@ exports.main = function(pomContent, packageContent, writer) {
         return;
     }
 
-    json.version = pomVersion;
+    json.version = mvnVersionToNpm(pomVersion);
     var newPackageContent = JSON.stringify(json);
     writer(newPackageContent);
 
@@ -41,4 +41,4 @@ function extractPomVersionNode(parent) {
     })[0];
 }
 
-function formatVersion (version) { return '"version": "' + version + '"'; }
+function mvnVersionToNpm (mvnVersion) { return  mvnVersion + '.0'; }
