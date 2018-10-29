@@ -41,7 +41,16 @@ function extractPomVersionNode(parent) {
     })[0];
 }
 
+function padToThreeNumbers(version) {
+    var tokens = version.split('.').length ;
+    var numbersToAdd =3-tokens;
+    for(var i =0; i<numbersToAdd;i++){
+        version = version+".0"
+    }
+    return version;
+}
+
 function mvnVersionToNpm (mvnVersion) {
     var tokens = mvnVersion.split("-");
-    return tokens[0] + ".0" + (tokens.length == 2 ? "-" +  tokens[1] : "");
+    return padToThreeNumbers(tokens[0]) + (tokens.length == 2 ? "-" +  tokens[1] : "");
 }

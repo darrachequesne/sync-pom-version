@@ -64,6 +64,22 @@ describe('sync-pom-version tests', function() {
         assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
     });
 
+    it('pom has an updated version on three digits -> package.json should be updated with the same version of pom', function() {
+        var POM_NEW_VERSION = "1.35.2";
+        var PACKAGE_JSON_OLD_VERSION = "1.34.0";
+        var PACKAGE_JSON_EXPECTED_NEW_VERSION = "1.35.2";
+
+        pomContent = setVersion(pomContent, POM_NEW_VERSION);
+        packageJsonContent = setVersion(packageJsonContent, PACKAGE_JSON_OLD_VERSION);
+        var packageVersion="";
+
+        syncPom.main(pomContent, packageJsonContent, function(content) {
+            packageVersion = JSON.parse(content).version;
+        });
+
+        assert.equal(packageVersion, PACKAGE_JSON_EXPECTED_NEW_VERSION)
+    });
+
 });
 
 function setVersion(content, version) {
