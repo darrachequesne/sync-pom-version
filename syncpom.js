@@ -1,7 +1,7 @@
 var fs = require('fs');
 var parse = require('xml-parser');
 
-exports.main = function(pomContent, packageContent, writer) {
+function extractPomVersion(pomContent) {
     var pom = parse(pomContent);
     var pomVersionNode = extractPomVersionNode(pom.root);
     if (!pomVersionNode) {
@@ -10,23 +10,27 @@ exports.main = function(pomContent, packageContent, writer) {
     }
 
     var pomVersion = pomVersionNode.content;
+    return pomVersion;
+}
+
+exports.main = function(pomContent, packageContent, writer) {
+
+    var pomVersion = extractPomVersion(pomContent);
     console.log('found version ' + pomVersion + ' in pom.xml');
 
     var json = JSON.parse(packageContent);
 
-    var packageVersion = json.version;
-    console.log('found version ' + packageVersion + ' in package.json');
+    var npmVersion = json.version;
+    console.log('found version ' + npmVersion + ' in package.json');
 
-    var newPackageVersion = mvnVersionToNpm(pomVersion);
-    if (newPackageVersion === packageVersion) {
-        return;
+    var newNpmVersion = mvnVersionToNpm(pomVersion);
+
+    if (newNpmVersion !== npmVersion) {
+        json.version = newNpmVersion;
+        var newPackageContent = JSON.stringify(json);
+        writer(newPackageContent);
+        console.log('package.json updated to version ' + pomVersion);
     }
-
-    json.version = newPackageVersion;
-    var newPackageContent = JSON.stringify(json);
-    writer(newPackageContent);
-
-    console.log('package.json updated to version ' + pomVersion);
 };
 
 function extractParentNode(node) {
