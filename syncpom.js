@@ -9,21 +9,20 @@ exports.main = function(pomContent, packageContent, writer) {
         pomVersionNode = extractPomVersionNode(parent);
     }
 
-    var pomVersion = pomVersionNode.content.replace(/[\.-](RELEASE|FINAL)$/i, '');
-
+    var pomVersion = pomVersionNode.content;
     console.log('found version ' + pomVersion + ' in pom.xml');
 
-
     var json = JSON.parse(packageContent);
-    var packageVersion = json.version;
 
+    var packageVersion = json.version;
     console.log('found version ' + packageVersion + ' in package.json');
 
-    if (pomVersion === packageVersion) {
+    var newPackageVersion = mvnVersionToNpm(pomVersion);
+    if (newPackageVersion === packageVersion) {
         return;
     }
 
-    json.version = mvnVersionToNpm(pomVersion);
+    json.version = newPackageVersion;
     var newPackageContent = JSON.stringify(json);
     writer(newPackageContent);
 
@@ -53,6 +52,7 @@ function padToNPMVersion(version) {
 }
 
 function mvnVersionToNpm (mvnVersion) {
+    var normalizedMvnVersion = mvnVersion.replace(/[\.-](RELEASE|FINAL)$/i, '');
     var tokens = mvnVersion.split("-");
     var snapshotSuffix = (tokens.length == 2 ? "-" +  tokens[1] : "");
     return padToNPMVersion(tokens[0]) + snapshotSuffix;
